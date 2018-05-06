@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 06-may-2018 17:11:49 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="primero.Pedidos" table="pedidos" catalog="tiendas">
+        <composite-id name="id" class="primero.PedidosId">
+            <key-property name="nif" type="string">
+                <column name="nif" length="10" />
+            </key-property>
+            <key-property name="articulo" type="string">
+                <column name="articulo" length="20" />
+            </key-property>
+            <key-property name="codFabricante" type="short">
+                <column name="cod_fabricante" />
+            </key-property>
+            <key-property name="peso" type="short">
+                <column name="peso" />
+            </key-property>
+            <key-property name="categoria" type="string">
+                <column name="categoria" length="10" />
+            </key-property>
+            <key-property name="fechaPedido" type="date">
+                <column name="fecha_pedido" length="10" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="tiendas" class="primero.Tiendas" update="false" insert="false" fetch="select">
+            <column name="nif" length="10" not-null="true" />
+        </many-to-one>
+        <many-to-one name="articulos" class="primero.Articulos" update="false" insert="false" fetch="select">
+            <column name="articulo" length="20" not-null="true" />
+            <column name="cod_fabricante" not-null="true" />
+            <column name="peso" not-null="true" />
+            <column name="categoria" length="10" not-null="true" />
+        </many-to-one>
+        <property name="unidadesPedidas" type="java.lang.Short">
+            <column name="unidades_pedidas" />
+        </property>
+    </class>
+</hibernate-mapping>
