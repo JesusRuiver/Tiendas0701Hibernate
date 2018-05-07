@@ -101,4 +101,9 @@ public class Tiendas implements java.io.Serializable {
 		this.ventases = ventases;
 	}
 
+	@Override
+	public String toString() {
+		return "Tiendas [nif=" + nif + ", nombre=" + nombre + "]";
+	}
+
 }
