@@ -18,6 +18,8 @@ import primero.HibernateUtil;
 import primero.Tiendas;
 
 import javax.swing.JComboBox;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Ejercicio1Hibernate extends JFrame {
 
@@ -54,6 +56,7 @@ public class Ejercicio1Hibernate extends JFrame {
 		contentPane.setLayout(null);
 
 		JComboBox cBoxTiendas = new JComboBox();
+		
 		cBoxTiendas.setBounds(27, 30, 343, 20);
 		contentPane.add(cBoxTiendas);
 		
@@ -73,14 +76,21 @@ public class Ejercicio1Hibernate extends JFrame {
 
 			cBoxTiendas.addItem(t1.toString());
 		}
+		
+		cBoxTiendas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				String nif = cBoxTiendas.getSelectedItem()
+				
+				
+			}
+		});
+		
+		String hql = "from Ventas where nif = :nif";
+		q = session.createQuery(hql);
+		
 
-		// for (int i = 0; i < lista.size();i++){
-
-		// Tiendas t1 = (Tiendas) it.next();
-
-		// cBoxTiendas.addItem(t1.toString());
-		// }
-
+		
 	}
 
 }
