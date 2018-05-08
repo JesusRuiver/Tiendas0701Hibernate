@@ -2,6 +2,7 @@ package ejercicios;
 
 import java.awt.EventQueue;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -13,7 +14,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import bbdd.ServicioTiendas;
 import primero.HibernateUtil;
 import primero.Tiendas;
 
@@ -22,6 +22,8 @@ import javax.swing.JComboBox;
 public class Ejercicio1Hibernate extends JFrame {
 
 	private JPanel contentPane;
+	private SessionFactory sesion;
+	private Session session;
 
 	/**
 	 * Launch the application.
@@ -44,12 +46,6 @@ public class Ejercicio1Hibernate extends JFrame {
 	 */
 	public Ejercicio1Hibernate() {
 
-		SessionFactory sesion = HibernateUtil.getSessionFactory();
-
-		Session session = sesion.openSession();
-
-		Transaction tx = session.beginTransaction();
-
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 704, 438);
 		contentPane = new JPanel();
@@ -58,21 +54,32 @@ public class Ejercicio1Hibernate extends JFrame {
 		contentPane.setLayout(null);
 
 		JComboBox cBoxTiendas = new JComboBox();
-		cBoxTiendas.setBounds(27, 30, 217, 20);
+		cBoxTiendas.setBounds(27, 30, 343, 20);
 		contentPane.add(cBoxTiendas);
 		
+		sesion = HibernateUtil.getSessionFactory();
 		
+		session = sesion.openSession();
 
-		ServicioTiendas servicioTiendas = new ServicioTiendas();
+		Query q = session.createQuery("from Tiendas");
+
+		List<Tiendas> lista = q.list();
 		
-		List<Tiendas> tiendas = servicioTiendas.dameTiendas();
-		
-		Tiendas t1 = new Tiendas();
-		
-		for (int i = 0; i < tiendas.size();i++){
-			
-			cBoxTiendas.addItem(tiendas.get(i));
+		Iterator<Tiendas> it = lista.iterator();
+
+		while (it.hasNext()) {
+
+			Tiendas t1 = (Tiendas) it.next();
+
+			cBoxTiendas.addItem(t1.toString());
 		}
+
+		// for (int i = 0; i < lista.size();i++){
+
+		// Tiendas t1 = (Tiendas) it.next();
+
+		// cBoxTiendas.addItem(t1.toString());
+		// }
 
 	}
 
