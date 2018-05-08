@@ -80,10 +80,12 @@ public class Ejercicio1Hibernate extends JFrame {
 		cBoxTiendas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				String nif = cBoxTiendas.getSelectedItem()
+				
 				
 				
 			}
+
+			
 		});
 		
 		String hql = "from Ventas where nif = :nif";
@@ -91,6 +93,15 @@ public class Ejercicio1Hibernate extends JFrame {
 		
 
 		
+	}
+	
+	private String seleccionaNifComboTiendas(JComboBox cBoxTiendas) {
+		
+		Tiendas t1 = new Tiendas();
+		
+		t1 = (Tiendas) cBoxTiendas.getSelectedItem();
+		
+		return t1.getNif();
 	}
 
 }
