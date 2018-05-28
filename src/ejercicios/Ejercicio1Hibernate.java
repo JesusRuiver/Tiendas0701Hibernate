@@ -153,15 +153,28 @@ public class Ejercicio1Hibernate extends JFrame {
 
 	private String[][] obtenerDatosVentas(String nif) {
 
-		List<VentasId> ventas;
+		List<Ventas> ventas;
 
 		ventas = dameVentasParaTabla(nif);
 
 		String matrizInfo[][] = new String[ventas.size()][6];
 
+		Ventas vent;
 		for (int i = 0; i < ventas.size(); i++) {
+			vent= (Ventas) ventas.get(i);
+			
 
-			matrizInfo[i][0] = ventas.get(i).getNif();
+			matrizInfo[i][0] = vent.getId().getNif();
+			matrizInfo[i][1] = vent.getId().getArticulo();
+			matrizInfo[i][2] = Integer.toString(vent.getId().getCodFabricante());
+			
+			matrizInfo[i][2] = ventas.get(i).getCodFabricante() + "";
+			matrizInfo[i][3] = ventas.get(i).getPeso() + "";
+			matrizInfo[i][4] = ventas.get(i).getCategoria();
+			matrizInfo[i][5] = ventas.get(i).getFechaVenta() + "";
+			
+			
+			
 			matrizInfo[i][1] = ventas.get(i).getArticulo();
 			matrizInfo[i][2] = ventas.get(i).getCodFabricante() + "";
 			matrizInfo[i][3] = ventas.get(i).getPeso() + "";
@@ -175,7 +188,7 @@ public class Ejercicio1Hibernate extends JFrame {
 		return matrizInfo;
 	}
 
-	private List<VentasId> dameVentasParaTabla(String nif) {
+	private List<Ventas> dameVentasParaTabla(String nif) {
 		
 		String hql = "from Ventas where nif = :nif";
 		
@@ -183,17 +196,8 @@ public class Ejercicio1Hibernate extends JFrame {
 
 		q.setParameter("nif", (String)nif);
 		
-		List<VentasId> lista = q.list();
+		List<Ventas> lista = q.list();
 		
-		Iterator<VentasId> it = lista.iterator();
-
-		while (it.hasNext()) {
-			
-			VentasId venta1 = (VentasId) it.next();
-			
-			lista.add(venta1);
-			
-		}
 		
 		return lista;
 	}
