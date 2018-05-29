@@ -14,7 +14,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import clases.Venta;
 import primero.HibernateUtil;
 import primero.Tiendas;
 import primero.Ventas;
@@ -36,6 +35,7 @@ public class Ejercicio1Hibernate extends JFrame {
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JTable tablaVentas;
 	private JScrollPane scrollPaneTabla;
+	private JComboBox cBoxTiendas = new JComboBox();
 
 	/**
 	 * Launch the application.
@@ -65,7 +65,7 @@ public class Ejercicio1Hibernate extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JComboBox cBoxTiendas = new JComboBox();
+		cBoxTiendas = new JComboBox();
 		
 		cBoxTiendas.setBounds(27, 30, 343, 20);
 		contentPane.add(cBoxTiendas);
@@ -157,7 +157,7 @@ public class Ejercicio1Hibernate extends JFrame {
 
 		ventas = dameVentasParaTabla(nif);
 
-		String matrizInfo[][] = new String[ventas.size()][6];
+		String matrizInfo[][] = new String[ventas.size()][7];
 
 		Ventas vent;
 		for (int i = 0; i < ventas.size(); i++) {
@@ -168,20 +168,20 @@ public class Ejercicio1Hibernate extends JFrame {
 			matrizInfo[i][1] = vent.getId().getArticulo();
 			matrizInfo[i][2] = Integer.toString(vent.getId().getCodFabricante());
 			
-			matrizInfo[i][2] = ventas.get(i).getCodFabricante() + "";
-			matrizInfo[i][3] = ventas.get(i).getPeso() + "";
-			matrizInfo[i][4] = ventas.get(i).getCategoria();
-			matrizInfo[i][5] = ventas.get(i).getFechaVenta() + "";
+			matrizInfo[i][2] = Short.toString(vent.getId().getPeso());
+			matrizInfo[i][3] = vent.getId().getCategoria();
+			matrizInfo[i][4] = vent.getId().getFechaVenta().toString();
+			matrizInfo[i][5] = Short.toString(vent.getUnidadesVendidas());
 			
 			
 			
-			matrizInfo[i][1] = ventas.get(i).getArticulo();
+			/*matrizInfo[i][1] = ventas.get(i).getArticulo();
 			matrizInfo[i][2] = ventas.get(i).getCodFabricante() + "";
 			matrizInfo[i][3] = ventas.get(i).getPeso() + "";
 			matrizInfo[i][4] = ventas.get(i).getCategoria();
 			matrizInfo[i][5] = ventas.get(i).getFechaVenta() + "";
 			//matrizInfo[i][6] = ventas.get(i).get + "";
-			//matrizInfo[i][7] = ventas.get(i).get + "";
+			//matrizInfo[i][7] = ventas.get(i).get + "";*/
 
 		}
 
