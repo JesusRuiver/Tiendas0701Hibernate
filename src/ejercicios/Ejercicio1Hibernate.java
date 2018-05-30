@@ -38,7 +38,7 @@ public class Ejercicio1Hibernate extends JFrame {
 	private JTable tablaVentas;
 	private JTable tablaPedidos;
 	private JScrollPane scrollPaneTabla;
-	private JComboBox<Tiendas> cBoxTiendas = new JComboBox();
+	private JComboBox<Tiendas> cboxTiendas = new JComboBox();
 
 	/**
 	 * Launch the application.
@@ -68,10 +68,10 @@ public class Ejercicio1Hibernate extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		cBoxTiendas = new JComboBox();
+		cboxTiendas = new JComboBox();
 
-		cBoxTiendas.setBounds(27, 30, 343, 20);
-		contentPane.add(cBoxTiendas);
+		cboxTiendas.setBounds(27, 30, 343, 20);
+		contentPane.add(cboxTiendas);
 
 		scrollPaneTabla = new JScrollPane();
 		scrollPaneTabla.setBounds(10, 86, 668, 303);
@@ -103,13 +103,13 @@ public class Ejercicio1Hibernate extends JFrame {
 
 			Tiendas t1 = (Tiendas) it.next();
 
-			cBoxTiendas.addItem(t1);
+			cboxTiendas.addItem(t1);
 		}
 
 		rbtnVentas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				String nif = seleccionaNif(cBoxTiendas);
+				String nif = seleccionaNif(cboxTiendas);
 
 				construirTablaVentas(nif);
 
@@ -119,14 +119,36 @@ public class Ejercicio1Hibernate extends JFrame {
 		rbtnPedidos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				String nif = seleccionaNif(cBoxTiendas);
+				String nif = seleccionaNif(cboxTiendas);
 
 				construirTablaPedidos(nif);
 			}
 		});
 
-		cBoxTiendas.addActionListener(new ActionListener() {
+		cboxTiendas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				if (rbtnVentas.isSelected() == true) {
+
+					String nif = seleccionaNif(cboxTiendas);
+
+					//String resultadoTotalVentas = miConexion.sumaPrecioVenta(nif);
+
+					construirTablaVentas(nif);
+
+					//lbResultadoTotal.setText(resultadoTotalVentas + " € Ingresos Ventas");
+
+				} else {
+
+					String nif = seleccionaNif(cboxTiendas);
+
+					//String resultadoTotalPedidos = miConexion.sumaPrecioCosto(nif);
+
+					construirTablaPedidos(nif);
+
+					//lbResultadoTotal.setText(resultadoTotalPedidos + "€ Coste Pedidos");
+
+				}
 
 			}
 
