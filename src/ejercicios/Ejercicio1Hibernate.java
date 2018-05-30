@@ -21,11 +21,15 @@ import primero.Ventas;
 
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
+import javax.swing.JLabel;
 
 public class Ejercicio1Hibernate extends JFrame {
 
@@ -60,7 +64,7 @@ public class Ejercicio1Hibernate extends JFrame {
 	public Ejercicio1Hibernate() {
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 704, 438);
+		setBounds(100, 100, 750, 505);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -72,7 +76,7 @@ public class Ejercicio1Hibernate extends JFrame {
 		contentPane.add(cboxTiendas);
 
 		scrollPaneTabla = new JScrollPane();
-		scrollPaneTabla.setBounds(10, 86, 668, 303);
+		scrollPaneTabla.setBounds(10, 86, 714, 334);
 		contentPane.add(scrollPaneTabla);
 
 		JRadioButton rbtnVentas = new JRadioButton("Ventas");
@@ -86,6 +90,14 @@ public class Ejercicio1Hibernate extends JFrame {
 		buttonGroup.add(rbtnPedidos);
 		rbtnPedidos.setBounds(148, 56, 109, 23);
 		contentPane.add(rbtnPedidos);
+		
+		JLabel lblTotalTitulo = new JLabel("Total:");
+		lblTotalTitulo.setBounds(348, 442, 46, 14);
+		contentPane.add(lblTotalTitulo);
+		
+		JLabel lbresultado = new JLabel("New label");
+		lbresultado.setBounds(413, 442, 311, 14);
+		contentPane.add(lbresultado);
 
 		sesion = HibernateUtil.getSessionFactory();
 
@@ -110,6 +122,10 @@ public class Ejercicio1Hibernate extends JFrame {
 				String nif = seleccionaNif(cboxTiendas);
 
 				construirTablaVentas(nif);
+				
+				double resultado = sumaPrecioVenta(nif);
+				
+				lbresultado.setText(String.valueOf(resultado) + " € Ingresos Ventas");
 
 			}
 		});
@@ -130,11 +146,11 @@ public class Ejercicio1Hibernate extends JFrame {
 
 					String nif = seleccionaNif(cboxTiendas);
 
-					//String resultadoTotalVentas = miConexion.sumaPrecioVenta(nif);
+					double resultado = sumaPrecioVenta(nif);
 
 					construirTablaVentas(nif);
-
-					//lbResultadoTotal.setText(resultadoTotalVentas + " € Ingresos Ventas");
+					
+					lbresultado.setText(String.valueOf(resultado) + " € Ingresos Ventas");
 
 				} else {
 
@@ -278,4 +294,28 @@ public class Ejercicio1Hibernate extends JFrame {
 		return lista;
 	}
 	
+	public double sumaPrecioVenta(String nif) {
+
+		String hql = "select sum(v.unidadesVendidas * a.precioVenta) "
+				+ "from Ventas v, Articulos a "
+				+ "where v.id.nif= :nif "
+				+ "and v.id.articulo = a.id.articulo "
+				+ "and v.id.categoria= a.id.categoria";
+
+		Query q = session.createQuery(hql);
+		
+		q.setParameter("nif", (String) nif);
+		
+		Iterator it = q.iterate();
+		
+		double resultado = 0;
+		
+		while (it.hasNext()) {
+			
+			resultado = (double) it.next();
+
+		}
+		System.out.println(resultado);
+		return resultado;
+	}
 }
