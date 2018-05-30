@@ -1,7 +1,6 @@
 package ejercicios;
 
 import java.awt.EventQueue;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -14,12 +13,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import primero.Fabricantes;
 import primero.HibernateUtil;
 import primero.Pedidos;
 import primero.Tiendas;
 import primero.Ventas;
-import primero.VentasId;
+
 
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
@@ -169,14 +167,14 @@ public class Ejercicio1Hibernate extends JFrame {
 
 		String titulosColumnas[] = { "NIF", "ARTICULO", "FABRICANTE", "PESO", "CATEGORIA", "FECHA VENTA",
 				"UNIDADES VENDIDAS", "PRECIO VENTA" };
-		String informacionTablaVentas[][] = obtenerDatosVentas(nif);
+		String informacionTablaVentas[][] = obtenerDatosVentasSinNombreFabricante(nif);
 
 		tablaVentas = new JTable(informacionTablaVentas, titulosColumnas);
 		scrollPaneTabla.setViewportView(tablaVentas);
 
 	}
 
-	private String[][] obtenerDatosVentas(String nif) {
+	private String[][] obtenerDatosVentasSinNombreFabricante(String nif) {
 
 		List<Ventas> ventas;
 
@@ -192,7 +190,8 @@ public class Ejercicio1Hibernate extends JFrame {
 
 			matrizInfo[i][0] = vent.getId().getNif();
 			matrizInfo[i][1] = vent.getId().getArticulo();
-			matrizInfo[i][2] = Integer.toString(vent.getId().getCodFabricante());
+			matrizInfo[i][2] = vent.getArticulos().getFabricantes().getNombre();
+			//matrizInfo[i][2] = Integer.toString(vent.getId().getCodFabricante());
 			matrizInfo[i][3] = Short.toString(vent.getId().getPeso());
 			matrizInfo[i][4] = vent.getId().getCategoria();
 			matrizInfo[i][5] = vent.getId().getFechaVenta().toString();
@@ -203,6 +202,8 @@ public class Ejercicio1Hibernate extends JFrame {
 
 		return matrizInfo;
 	}
+	
+
 
 	private void construirTablaPedidos(String nif) {
 		String titulosColumnas[] = { "NIF", "ARTICULO", "FABRICANTE", "PESO", "CATEGORIA", "FECHA VENTA",
@@ -218,7 +219,7 @@ public class Ejercicio1Hibernate extends JFrame {
 
 		List<Pedidos> pedidos;
 
-		pedidos = dameVentasParaPedidos(nif);
+		pedidos = damePedidosParaTabla(nif);
 
 		String matrizInfo[][] = new String[pedidos.size()][8];
 
@@ -230,7 +231,7 @@ public class Ejercicio1Hibernate extends JFrame {
 
 			matrizInfo[i][0] = pedido.getId().getNif();
 			matrizInfo[i][1] = pedido.getId().getArticulo();
-			matrizInfo[i][2] = Integer.toString(pedido.getId().getCodFabricante());
+			matrizInfo[i][2] = pedido.getArticulos().getFabricantes().getNombre();
 			matrizInfo[i][3] = Short.toString(pedido.getId().getPeso());
 			matrizInfo[i][4] = pedido.getId().getCategoria();
 			matrizInfo[i][5] = pedido.getId().getFechaPedido().toString();
@@ -246,16 +247,14 @@ public class Ejercicio1Hibernate extends JFrame {
 	private List<Ventas> dameVentasParaTabla(String nif) {
 
 		String hql = "from Ventas where nif = :nif";
-
-		/*
-		 * String hql =
-		 * "select v.id.nif, v.id.articulo, f.nombre, v.id.categoria, v.id.fechaVenta, v.unidadesVendidas, a.precioVenta  from Ventas v, Articulos a, Fabricantes f "
-		 * + "where v.id.nif = :nif " +
-		 * "and v.id.codFabricante = a.id.codFabricante " +
-		 * "and v.id.categoria = a.id.categoria " + "and v.id.peso = a.id.peso "
-		 * + "and v.id.articulo = a.id.articulo " +
-		 * "and v.id.codFabricante = f.codFabricante";
-		 */
+		
+		/*String hql =
+				 "select v.id.nif, v.id.articulo, f.nombre, v.id.categoria, v.id.fechaVenta, v.unidadesVendidas, a.precioVenta  from Ventas v, Articulos a, Fabricantes f "
+				 + "where v.id.nif = :nif " +
+				 "and v.id.codFabricante = a.id.codFabricante " +
+				 "and v.id.categoria = a.id.categoria " + "and v.id.peso = a.id.peso "
+				 + "and v.id.articulo = a.id.articulo " +
+				 "and v.id.codFabricante = f.codFabricante";*/
 
 		Query q = session.createQuery(hql);
 
@@ -266,7 +265,7 @@ public class Ejercicio1Hibernate extends JFrame {
 		return lista;
 	}
 
-	private List<Pedidos> dameVentasParaPedidos(String nif) {
+	private List<Pedidos> damePedidosParaTabla(String nif) {
 
 		String hql = "from Pedidos where nif = :nif";
 
@@ -278,4 +277,5 @@ public class Ejercicio1Hibernate extends JFrame {
 
 		return lista;
 	}
+	
 }
