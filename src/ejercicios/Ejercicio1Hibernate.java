@@ -35,7 +35,7 @@ public class Ejercicio1Hibernate extends JFrame {
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JTable tablaVentas;
 	private JScrollPane scrollPaneTabla;
-	private JComboBox cBoxTiendas = new JComboBox();
+	private JComboBox <Tiendas> cBoxTiendas = new JComboBox();
 
 	/**
 	 * Launch the application.
@@ -99,7 +99,7 @@ public class Ejercicio1Hibernate extends JFrame {
 
 			Tiendas t1 = (Tiendas) it.next();
 
-			cBoxTiendas.addItem(t1.toString());
+			cBoxTiendas.addItem(t1);
 		}
 		
 		rbtnVentas.addActionListener(new ActionListener() {
@@ -143,7 +143,7 @@ public class Ejercicio1Hibernate extends JFrame {
 	private void construirTablaVentas(String nif) {
 
 		String titulosColumnas[] = { "NIF", "ARTICULO", "FABRICANTE", "PESO", "CATEGORIA", "FECHA VENTA",
-				"UNIDADES VENDIDAS", "PRECIO VENTA" };
+				"UNIDADES VENDIDAS"};
 		String informacionTablaVentas[][] = obtenerDatosVentas(nif);
 
 		tablaVentas = new JTable(informacionTablaVentas, titulosColumnas);
@@ -167,21 +167,10 @@ public class Ejercicio1Hibernate extends JFrame {
 			matrizInfo[i][0] = vent.getId().getNif();
 			matrizInfo[i][1] = vent.getId().getArticulo();
 			matrizInfo[i][2] = Integer.toString(vent.getId().getCodFabricante());
-			
-			matrizInfo[i][2] = Short.toString(vent.getId().getPeso());
 			matrizInfo[i][3] = vent.getId().getCategoria();
-			matrizInfo[i][4] = vent.getId().getFechaVenta().toString();
-			matrizInfo[i][5] = Short.toString(vent.getUnidadesVendidas());
-			
-			
-			
-			/*matrizInfo[i][1] = ventas.get(i).getArticulo();
-			matrizInfo[i][2] = ventas.get(i).getCodFabricante() + "";
-			matrizInfo[i][3] = ventas.get(i).getPeso() + "";
-			matrizInfo[i][4] = ventas.get(i).getCategoria();
-			matrizInfo[i][5] = ventas.get(i).getFechaVenta() + "";
-			//matrizInfo[i][6] = ventas.get(i).get + "";
-			//matrizInfo[i][7] = ventas.get(i).get + "";*/
+			matrizInfo[i][4] = Short.toString(vent.getId().getPeso());
+			matrizInfo[i][5] = vent.getId().getFechaVenta().toString();
+			matrizInfo[i][6] = Short.toString(vent.getUnidadesVendidas());
 
 		}
 

@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 06-may-2018 17:11:49 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="primero.Articulos" table="articulos" catalog="tiendas">
+        <composite-id name="id" class="primero.ArticulosId">
+            <key-property name="articulo" type="string">
+                <column name="articulo" length="20" />
+            </key-property>
+            <key-property name="codFabricante" type="short">
+                <column name="cod_fabricante" />
+            </key-property>
+            <key-property name="peso" type="short">
+                <column name="peso" />
+            </key-property>
+            <key-property name="categoria" type="string">
+                <column name="categoria" length="10" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="fabricantes" class="primero.Fabricantes" update="false" insert="false" fetch="select">
+            <column name="cod_fabricante" not-null="true" />
+        </many-to-one>
+        <property name="precioVenta" type="java.lang.Float">
+            <column name="precio_venta" precision="6" />
+        </property>
+        <property name="precioCosto" type="java.lang.Float">
+            <column name="precio_costo" precision="6" />
+        </property>
+        <property name="existencias" type="java.lang.Short">
+            <column name="existencias" />
+        </property>
+        <set name="ventases" table="ventas" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="articulo" length="20" not-null="true" />
+                <column name="cod_fabricante" not-null="true" />
+                <column name="peso" not-null="true" />
+                <column name="categoria" length="10" not-null="true" />
+            </key>
+            <one-to-many class="primero.Ventas" />
+        </set>
+        <set name="pedidoses" table="pedidos" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="articulo" length="20" not-null="true" />
+                <column name="cod_fabricante" not-null="true" />
+                <column name="peso" not-null="true" />
+                <column name="categoria" length="10" not-null="true" />
+            </key>
+            <one-to-many class="primero.Pedidos" />
+        </set>
+    </class>
+</hibernate-mapping>
