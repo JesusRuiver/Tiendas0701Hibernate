@@ -9,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -489,14 +490,17 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 								String nif = elemento.getElementsByTagName("nif").item(0).getTextContent();
 								String nombreArticulo = elemento.getElementsByTagName("nombreArticulo").item(0)
 										.getTextContent();
-								int codFabricante = Integer.parseInt(
+								short codFabricante = Short.parseShort(
 										elemento.getElementsByTagName("codFabricante").item(0).getTextContent());
-								int peso = Integer
-										.parseInt(elemento.getElementsByTagName("peso").item(0).getTextContent());
+								short peso = Short.parseShort(elemento.getElementsByTagName("peso").item(0).getTextContent());
 								String categoria = elemento.getElementsByTagName("categoria").item(0).getTextContent();
-								String fechaVenta = elemento.getElementsByTagName("fechaVenta").item(0)
+								
+								String fechaVentaString = elemento.getElementsByTagName("fechaVenta").item(0)
 										.getTextContent();
-								int unidadesVendidas = Integer.parseInt(
+								SimpleDateFormat formatoTexto = new SimpleDateFormat("yyyy-MM-dd");
+								Date fechaVenta = formatoTexto.parse(fechaVentaString);
+								
+								short unidadesVendidas = Short.parseShort(
 										elemento.getElementsByTagName("unidadesVendidas").item(0).getTextContent());
 
 								/*
@@ -512,8 +516,8 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 								System.out.println("Fecha Venta: " + fechaVenta);
 								System.out.println("Unidades Vendidas: " + unidadesVendidas);
 
-								/*insertaVenta(nif, nombreArticulo, codFabricante, peso, categoria, fechaVenta,
-										unidadesVendidas);*/
+								insertaVenta(nif, nombreArticulo, codFabricante, peso, categoria, fechaVenta,
+										unidadesVendidas);
 							}
 						}
 
@@ -542,14 +546,17 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 								String nif = elemento.getElementsByTagName("nif").item(0).getTextContent();
 								String nombreArticulo = elemento.getElementsByTagName("nombreArticulo").item(0)
 										.getTextContent();
-								int codFabricante = Integer.parseInt(
+								short codFabricante = Short.parseShort(
 										elemento.getElementsByTagName("codFabricante").item(0).getTextContent());
-								int peso = Integer
-										.parseInt(elemento.getElementsByTagName("peso").item(0).getTextContent());
+								short peso = Short.parseShort(elemento.getElementsByTagName("peso").item(0).getTextContent());
 								String categoria = elemento.getElementsByTagName("categoria").item(0).getTextContent();
-								String fechaPedido = elemento.getElementsByTagName("fechaPedido").item(0)
+								
+								String fechaPedidoString = elemento.getElementsByTagName("fechaPedido").item(0)
 										.getTextContent();
-								int unidadesPedidas = Integer.parseInt(
+								SimpleDateFormat formatoTexto = new SimpleDateFormat("yyyy-MM-dd");
+								Date fechaPedido = formatoTexto.parse(fechaPedidoString);
+								
+								short unidadesPedidas = Short.parseShort(
 										elemento.getElementsByTagName("unidadesPedidas").item(0).getTextContent());
 
 								/*
@@ -565,8 +572,8 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 								System.out.println("Fecha Pedido: " + fechaPedido);
 								System.out.println("Unidades Pedidas: " + unidadesPedidas);
 
-								/*insertaPedido(nif, nombreArticulo, codFabricante, peso, categoria,
-										fechaPedido, unidadesPedidas);*/
+								insertaPedido(nif, nombreArticulo, codFabricante, peso, categoria,
+										fechaPedido, unidadesPedidas);
 							}
 						}
 					} catch (Exception e) {
