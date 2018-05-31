@@ -59,4 +59,12 @@ public class Ventas implements java.io.Serializable {
 		this.unidadesVendidas = unidadesVendidas;
 	}
 
+	@Override
+	public String toString() {
+		return "Ventas [id=" + id + ", tiendas=" + tiendas + ", articulos=" + articulos + ", unidadesVendidas="
+				+ unidadesVendidas + "]";
+	}
+	
+	
+
 }

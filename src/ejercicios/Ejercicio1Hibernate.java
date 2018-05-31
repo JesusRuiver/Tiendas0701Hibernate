@@ -34,8 +34,10 @@ import javax.swing.JLabel;
 public class Ejercicio1Hibernate extends JFrame {
 
 	private JPanel contentPane;
+	
 	private SessionFactory sesion;
 	private Session session;
+	
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JTable tablaVentas;
 	private JTable tablaPedidos;
@@ -98,23 +100,14 @@ public class Ejercicio1Hibernate extends JFrame {
 		JLabel lbresultado = new JLabel("New label");
 		lbresultado.setBounds(413, 442, 311, 14);
 		contentPane.add(lbresultado);
+		
+		//Iniciamos sesión con HibernateUtil
 
 		sesion = HibernateUtil.getSessionFactory();
 
 		session = sesion.openSession();
 
-		Query q = session.createQuery("from Tiendas");
-
-		List<Tiendas> lista = q.list();
-
-		Iterator<Tiendas> it = lista.iterator();
-
-		while (it.hasNext()) {
-
-			Tiendas t1 = (Tiendas) it.next();
-
-			cboxTiendas.addItem(t1);
-		}
+		rellenaComboTiendas();
 
 		rbtnVentas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -205,6 +198,22 @@ public class Ejercicio1Hibernate extends JFrame {
 
 		});
 
+	}
+
+	public void rellenaComboTiendas() {
+		
+		Query q = session.createQuery("from Tiendas");
+
+		List<Tiendas> lista = q.list();
+
+		Iterator<Tiendas> it = lista.iterator();
+
+		while (it.hasNext()) {
+
+			Tiendas t1 = (Tiendas) it.next();
+
+			cboxTiendas.addItem(t1);
+		}
 	}
 
 	private String seleccionaNif(JComboBox cBoxTiendas) {
