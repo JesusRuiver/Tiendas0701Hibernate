@@ -327,7 +327,7 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 
 					} catch (Exception ex) {
 
-						//JOptionPane.showMessageDialog(null, "Fichero Importado con exito");
+						// JOptionPane.showMessageDialog(null, "Fichero Importado con exito");
 					}
 
 				}
@@ -352,21 +352,22 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 						document.setXmlVersion("1.0");
 
 						Ventas venta1;
-						
+
 						for (int i = 0; i < ventas.size(); i++) {
 
 							Element raiz = document.createElement("venta"); // nodo
 																			// venta
 							document.getDocumentElement().appendChild(raiz);
-							
+
 							venta1 = (Ventas) ventas.get(i);
-							
+
 							// añadir Nif
 							crearElemento("nif", venta1.getId().getNif(), raiz, document);
 							// añadir nombreArticulo
 							crearElemento("nombreArticulo", venta1.getId().getArticulo(), raiz, document);
 							// añadir codFabricante
-							crearElemento("codFabricante", Short.toString(venta1.getId().getCodFabricante()), raiz, document);
+							crearElemento("codFabricante", Short.toString(venta1.getId().getCodFabricante()), raiz,
+									document);
 							// añadir peso
 							crearElemento("peso", Short.toString(venta1.getId().getPeso()), raiz, document);
 							// añadir categoria
@@ -374,7 +375,8 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 							// añadir fechaVenta
 							crearElemento("fechaVenta", venta1.getId().getFechaVenta().toString(), raiz, document);
 							// añadir unidadesVendidas
-							crearElemento("unidadesVendidas", Short.toString(venta1.getUnidadesVendidas()), raiz, document);
+							crearElemento("unidadesVendidas", Short.toString(venta1.getUnidadesVendidas()), raiz,
+									document);
 						}
 
 						Source source = new DOMSource(document);
@@ -399,7 +401,7 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 					}
 
 				} else {
-					
+
 					DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
 					DocumentBuilder builder;
@@ -411,21 +413,22 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 						document.setXmlVersion("1.0");
 
 						Pedidos pedido1;
-						
+
 						for (int i = 0; i < pedidos.size(); i++) {
 
 							Element raiz = document.createElement("pedido"); // nodo
-																			// venta
+																				// venta
 							document.getDocumentElement().appendChild(raiz);
-							
+
 							pedido1 = (Pedidos) pedidos.get(i);
-							
+
 							// añadir Nif
 							crearElemento("nif", pedido1.getId().getNif(), raiz, document);
 							// añadir nombreArticulo
 							crearElemento("nombreArticulo", pedido1.getId().getArticulo(), raiz, document);
 							// añadir codFabricante
-							crearElemento("codFabricante", Short.toString(pedido1.getId().getCodFabricante()), raiz, document);
+							crearElemento("codFabricante", Short.toString(pedido1.getId().getCodFabricante()), raiz,
+									document);
 							// añadir peso
 							crearElemento("peso", Short.toString(pedido1.getId().getPeso()), raiz, document);
 							// añadir categoria
@@ -433,7 +436,8 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 							// añadir fechaVenta
 							crearElemento("fechaPedido", pedido1.getId().getFechaPedido().toString(), raiz, document);
 							// añadir unidadesVendidas
-							crearElemento("unidadesPedidas", Short.toString(pedido1.getUnidadesPedidas()), raiz, document);
+							crearElemento("unidadesPedidas", Short.toString(pedido1.getUnidadesPedidas()), raiz,
+									document);
 						}
 
 						Source source = new DOMSource(document);
@@ -456,8 +460,6 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-
-					
 
 				}
 
@@ -492,23 +494,23 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 										.getTextContent();
 								short codFabricante = Short.parseShort(
 										elemento.getElementsByTagName("codFabricante").item(0).getTextContent());
-								short peso = Short.parseShort(elemento.getElementsByTagName("peso").item(0).getTextContent());
+								short peso = Short
+										.parseShort(elemento.getElementsByTagName("peso").item(0).getTextContent());
 								String categoria = elemento.getElementsByTagName("categoria").item(0).getTextContent();
-								
+
 								String fechaVentaString = elemento.getElementsByTagName("fechaVenta").item(0)
 										.getTextContent();
 								SimpleDateFormat formatoTexto = new SimpleDateFormat("yyyy-MM-dd");
 								Date fechaVenta = formatoTexto.parse(fechaVentaString);
-								
+
 								short unidadesVendidas = Short.parseShort(
 										elemento.getElementsByTagName("unidadesVendidas").item(0).getTextContent());
 
-								
-								insertaVenta(nif, nombreArticulo, codFabricante, peso, categoria, fechaVenta, unidadesVendidas);
-								
+								insertaVenta(nif, nombreArticulo, codFabricante, peso, categoria, fechaVenta,
+										unidadesVendidas);
+
 								/*
-								 * Comprobamos si esta recogiedo los datos del
-								 * XML
+								 * Comprobamos si esta recogiedo los datos del XML
 								 */
 
 								System.out.println("Nif: " + nif);
@@ -519,7 +521,6 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 								System.out.println("Fecha Venta: " + fechaVenta);
 								System.out.println("Unidades Vendidas: " + unidadesVendidas);
 
-								
 							}
 						}
 
@@ -527,7 +528,9 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 
 					}
 
-				} else {
+				}
+				
+				if (rbtnPedidos.isSelected() == true) {
 					try {
 
 						DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -550,23 +553,23 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 										.getTextContent();
 								short codFabricante = Short.parseShort(
 										elemento.getElementsByTagName("codFabricante").item(0).getTextContent());
-								short peso = Short.parseShort(elemento.getElementsByTagName("peso").item(0).getTextContent());
+								short peso = Short
+										.parseShort(elemento.getElementsByTagName("peso").item(0).getTextContent());
 								String categoria = elemento.getElementsByTagName("categoria").item(0).getTextContent();
-								
+
 								String fechaPedidoString = elemento.getElementsByTagName("fechaPedido").item(0)
 										.getTextContent();
 								SimpleDateFormat formatoTexto = new SimpleDateFormat("yyyy-MM-dd");
 								Date fechaPedido = formatoTexto.parse(fechaPedidoString);
-								
+
 								short unidadesPedidas = Short.parseShort(
 										elemento.getElementsByTagName("unidadesPedidas").item(0).getTextContent());
 
-								
-								insertaPedido(nif, nombreArticulo, codFabricante, peso, categoria, fechaPedido, unidadesPedidas);
-								
+								insertaPedido(nif, nombreArticulo, codFabricante, peso, categoria, fechaPedido,
+										unidadesPedidas);
+
 								/*
-								 * Comprobamos si esta recogiedo los datos del
-								 * XML
+								 * Comprobamos si esta recogiedo los datos del XML
 								 */
 
 								System.out.println("Nif: " + nif);
@@ -577,7 +580,6 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 								System.out.println("Fecha Pedido: " + fechaPedido);
 								System.out.println("Unidades Pedidas: " + unidadesPedidas);
 
-								
 							}
 						}
 					} catch (Exception e) {
@@ -624,10 +626,9 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 		/*
 		 * String hql =
 		 * "select v.id.nif, v.id.articulo, f.nombre, v.id.categoria, v.id.fechaVenta, v.unidadesVendidas, a.precioVenta  from Ventas v, Articulos a, Fabricantes f "
-		 * + "where v.id.nif = :nif " +
-		 * "and v.id.codFabricante = a.id.codFabricante " +
-		 * "and v.id.categoria = a.id.categoria " + "and v.id.peso = a.id.peso "
-		 * + "and v.id.articulo = a.id.articulo " +
+		 * + "where v.id.nif = :nif " + "and v.id.codFabricante = a.id.codFabricante " +
+		 * "and v.id.categoria = a.id.categoria " + "and v.id.peso = a.id.peso " +
+		 * "and v.id.articulo = a.id.articulo " +
 		 * "and v.id.codFabricante = f.codFabricante";
 		 */
 
@@ -696,7 +697,7 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 		tx.commit();
 
 	}
-	
+
 	public void crearElemento(String dato, String valor, Element raiz, Document document) {
 
 		Element elem = document.createElement(dato);
