@@ -503,6 +503,9 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 								short unidadesVendidas = Short.parseShort(
 										elemento.getElementsByTagName("unidadesVendidas").item(0).getTextContent());
 
+								
+								insertaVenta(nif, nombreArticulo, codFabricante, peso, categoria, fechaVenta, unidadesVendidas);
+								
 								/*
 								 * Comprobamos si esta recogiedo los datos del
 								 * XML
@@ -516,8 +519,7 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 								System.out.println("Fecha Venta: " + fechaVenta);
 								System.out.println("Unidades Vendidas: " + unidadesVendidas);
 
-								insertaVenta(nif, nombreArticulo, codFabricante, peso, categoria, fechaVenta,
-										unidadesVendidas);
+								
 							}
 						}
 
@@ -559,6 +561,9 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 								short unidadesPedidas = Short.parseShort(
 										elemento.getElementsByTagName("unidadesPedidas").item(0).getTextContent());
 
+								
+								insertaPedido(nif, nombreArticulo, codFabricante, peso, categoria, fechaPedido, unidadesPedidas);
+								
 								/*
 								 * Comprobamos si esta recogiedo los datos del
 								 * XML
@@ -572,8 +577,7 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 								System.out.println("Fecha Pedido: " + fechaPedido);
 								System.out.println("Unidades Pedidas: " + unidadesPedidas);
 
-								insertaPedido(nif, nombreArticulo, codFabricante, peso, categoria,
-										fechaPedido, unidadesPedidas);
+								
 							}
 						}
 					} catch (Exception e) {
