@@ -2,14 +2,20 @@ package ejercicios;
 
 import java.awt.EventQueue;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import bbdd.Conexion;
-import clases.Articulo;
-import clases.Tienda;
+import primero.HibernateUtil;
+import primero.Tiendas;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import javax.swing.JScrollPane;
 import javax.swing.JList;
@@ -20,6 +26,9 @@ import javax.swing.JLabel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.event.ListSelectionListener;
+
+import org.hibernate.Query;
+
 import javax.swing.event.ListSelectionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -29,6 +38,11 @@ public class Ejercicio3HibernateListaComboInsert extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField;
 	private JTextField textField_1;
+
+	private JList<Tiendas> listTiendas = new JList<Tiendas>();
+
+	private SessionFactory sesion;
+	private Session session;
 
 	/**
 	 * Launch the application.
@@ -51,7 +65,6 @@ public class Ejercicio3HibernateListaComboInsert extends JFrame {
 	 */
 	public Ejercicio3HibernateListaComboInsert() {
 
-
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 721, 415);
 		contentPane = new JPanel();
@@ -63,7 +76,7 @@ public class Ejercicio3HibernateListaComboInsert extends JFrame {
 		scrollPane.setBounds(26, 34, 294, 308);
 		contentPane.add(scrollPane);
 
-		JList<String> listTiendas = new JList();
+		listTiendas = new JList();
 
 		scrollPane.setViewportView(listTiendas);
 
@@ -110,24 +123,24 @@ public class Ejercicio3HibernateListaComboInsert extends JFrame {
 		btnInsertarArticulo.setBounds(557, 327, 89, 23);
 		contentPane.add(btnInsertarArticulo);
 
+		// Iniciamos sesión con HibernateUtil
+
+		sesion = HibernateUtil.getSessionFactory();
+
+		session = sesion.openSession();
+
 		rellenaListaTiendas(listTiendas);
 
-		rellenaComboBoxArticulos(cboxArticulos);
+
 
 		listTiendas.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 
-			
-
 			}
 		});
 
-
-
 		cboxArticulos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
-				
 
 			}
 		});
@@ -136,27 +149,25 @@ public class Ejercicio3HibernateListaComboInsert extends JFrame {
 
 	// ------------------------------------------METODOS-----------------------------------------//
 
-	private void rellenaComboBoxArticulos(JComboBox cboxArticulos) {
-		ArrayList<Articulo> articulos = new ArrayList<Articulo>();
-		
-		articulos = miConexion.dameArticulos();
-		
-		for (int i = 0; i< articulos.size();i++){
-			cboxArticulos.addItem(articulos.get(i));
-		}
-		
-	}
+	
 
 	private void rellenaListaTiendas(JList listTiendas) {
 
-		DefaultListModel<Tienda> modeloLista = new DefaultListModel<Tienda>();
+		DefaultListModel <Tiendas> modeloLista = new DefaultListModel<Tiendas>();
 
-		ArrayList<Tienda> datos = new ArrayList<Tienda>();
+		String hql = "from Tiendas";
 
-		datos = miConexion.dameTiendas();
+		Query q = session.createQuery(hql);
 
-		for (int i = 0; i < datos.size(); i++) {
-			modeloLista.addElement(datos.get(i));
+		List <Tiendas> listaTiendas = q.list();
+
+		Iterator<Tiendas> it = listaTiendas.iterator();
+
+		while (it.hasNext()) {
+
+			Tiendas t1 = (Tiendas) it.next();
+
+			modeloLista.addElement(t1);
 		}
 
 		listTiendas.setModel(modeloLista);
