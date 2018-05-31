@@ -648,17 +648,6 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 		return lista;
 	}
 
-	public void crearElemento(String dato, String valor, Element raiz, Document document) {
-
-		Element elem = document.createElement(dato);
-
-		Text text = document.createTextNode(valor); // damos valor
-
-		raiz.appendChild(elem); // pegamos el elemento hijo a la raiz
-
-		elem.appendChild(text); // pegamos el valor
-	}
-
 	public void insertaVenta(String nif, String nombreArticulo, short codFabricante, short peso, String categoria,
 			Date fechaVenta, short unidadesVendidas) {
 
