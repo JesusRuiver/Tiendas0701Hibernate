@@ -119,6 +119,9 @@ public class Ejercicio1Hibernate extends JFrame {
 		rbtnVentas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
+				try{
+					
+				
 				String nif = seleccionaNif(cboxTiendas);
 
 				construirTablaVentas(nif);
@@ -126,6 +129,12 @@ public class Ejercicio1Hibernate extends JFrame {
 				double resultado = sumaPrecioVenta(nif);
 				
 				lbresultado.setText(String.valueOf(resultado) + " € Ingresos Ventas");
+				
+				} catch (Exception e) {
+					
+					lbresultado.setText(" ");
+					
+				}
 
 			}
 		});
@@ -133,9 +142,21 @@ public class Ejercicio1Hibernate extends JFrame {
 		rbtnPedidos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
+				try{
+				
 				String nif = seleccionaNif(cboxTiendas);
-
+				
+				
+				double resultado = sumaPrecioPedido(nif);
+				
 				construirTablaPedidos(nif);
+				
+				lbresultado.setText(String.valueOf(resultado) + "€ Coste Pedidos");
+				
+				} catch (Exception e) {
+					
+					lbresultado.setText(" ");
+				}
 			}
 		});
 
@@ -144,24 +165,40 @@ public class Ejercicio1Hibernate extends JFrame {
 				
 				if (rbtnVentas.isSelected() == true) {
 
-					String nif = seleccionaNif(cboxTiendas);
+					try{
+						
+						
+						String nif = seleccionaNif(cboxTiendas);
 
-					double resultado = sumaPrecioVenta(nif);
-
-					construirTablaVentas(nif);
-					
-					lbresultado.setText(String.valueOf(resultado) + " € Ingresos Ventas");
+						construirTablaVentas(nif);
+						
+						double resultado = sumaPrecioVenta(nif);
+						
+						lbresultado.setText(String.valueOf(resultado) + " € Ingresos Ventas");
+						
+						} catch (Exception e) {
+							
+							lbresultado.setText(" ");
+							
+						}
 
 				} else {
 
-					String nif = seleccionaNif(cboxTiendas);
-
-					//String resultadoTotalPedidos = miConexion.sumaPrecioCosto(nif);
-
-					construirTablaPedidos(nif);
-
-					//lbResultadoTotal.setText(resultadoTotalPedidos + "€ Coste Pedidos");
-
+					try{
+						
+						String nif = seleccionaNif(cboxTiendas);
+						
+						
+						double resultado = sumaPrecioPedido(nif);
+						
+						construirTablaPedidos(nif);
+						
+						lbresultado.setText(String.valueOf(resultado) + "€ Coste Pedidos");
+						
+						} catch (Exception e) {
+							
+							lbresultado.setText(" ");
+						}
 				}
 
 			}
@@ -301,6 +338,31 @@ public class Ejercicio1Hibernate extends JFrame {
 				+ "where v.id.nif= :nif "
 				+ "and v.id.articulo = a.id.articulo "
 				+ "and v.id.categoria= a.id.categoria";
+
+		Query q = session.createQuery(hql);
+		
+		q.setParameter("nif", (String) nif);
+		
+		Iterator it = q.iterate();
+		
+		double resultado = 0;
+		
+		while (it.hasNext()) {
+			
+			resultado = (double) it.next();
+
+		}
+		System.out.println(resultado);
+		return resultado;
+	}
+	
+	public double sumaPrecioPedido(String nif) {
+
+		String hql = "select sum(p.unidadesPedidas * a.precioCosto) "
+				+ "from Pedidos p, Articulos a "
+				+ "where p.id.nif= :nif "
+				+ "and p.id.articulo = a.id.articulo "
+				+ "and p.id.categoria= a.id.categoria";
 
 		Query q = session.createQuery(hql);
 		
