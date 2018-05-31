@@ -42,12 +42,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
-import bbdd.Conexion;
-import clases.Articulo;
-import clases.Fabricante;
-import clases.Pedido;
-import clases.Tienda;
-import clases.Venta;
 import primero.HibernateUtil;
 import primero.Pedidos;
 import primero.PedidosId;
@@ -383,11 +377,11 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 						}
 
 						Source source = new DOMSource(document);
-						Result result = new StreamResult(new java.io.File("Ventas.xml"));
+						Result result = new StreamResult(new java.io.File("VentasXML.xml"));
 						Transformer transformer = TransformerFactory.newInstance().newTransformer();
 						transformer.transform(source, result);
 
-						JOptionPane.showMessageDialog(null, "Exportado Fichero Ventas.xml");
+						JOptionPane.showMessageDialog(null, "Exportado Fichero VentasXML.xml");
 
 					} catch (ParserConfigurationException e1) {
 						// TODO Auto-generated catch block
@@ -436,9 +430,9 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 							// añadir categoria
 							crearElemento("categoria", pedido1.getId().getCategoria(), raiz, document);
 							// añadir fechaVenta
-							crearElemento("fechaVenta", pedido1.getId().getFechaPedido().toString(), raiz, document);
+							crearElemento("fechaPedido", pedido1.getId().getFechaPedido().toString(), raiz, document);
 							// añadir unidadesVendidas
-							crearElemento("unidadesVendidas", Short.toString(pedido1.getUnidadesPedidas()), raiz, document);
+							crearElemento("unidadesPedidas", Short.toString(pedido1.getUnidadesPedidas()), raiz, document);
 						}
 
 						Source source = new DOMSource(document);
@@ -480,7 +474,7 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 						DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
 						DocumentBuilder builder = factory.newDocumentBuilder();
-						Document documento = builder.parse(new File("Ventas.xml"));
+						Document documento = builder.parse(new File("VentasXML.xml"));
 						documento.getDocumentElement().normalize();
 
 						NodeList config = documento.getElementsByTagName("venta");
@@ -518,8 +512,8 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 								System.out.println("Fecha Venta: " + fechaVenta);
 								System.out.println("Unidades Vendidas: " + unidadesVendidas);
 
-								miConexion.insertaVenta(nif, nombreArticulo, codFabricante, peso, categoria, fechaVenta,
-										unidadesVendidas);
+								/*insertaVenta(nif, nombreArticulo, codFabricante, peso, categoria, fechaVenta,
+										unidadesVendidas);*/
 							}
 						}
 
@@ -533,7 +527,7 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 						DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
 						DocumentBuilder builder = factory.newDocumentBuilder();
-						Document documento = builder.parse(new File("Pedidos.xml"));
+						Document documento = builder.parse(new File("PedidosXML.xml"));
 						documento.getDocumentElement().normalize();
 
 						NodeList config = documento.getElementsByTagName("pedido");
@@ -571,8 +565,8 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 								System.out.println("Fecha Pedido: " + fechaPedido);
 								System.out.println("Unidades Pedidas: " + unidadesPedidas);
 
-								miConexion.insertaPedido(nif, nombreArticulo, codFabricante, peso, categoria,
-										fechaPedido, unidadesPedidas);
+								/*insertaPedido(nif, nombreArticulo, codFabricante, peso, categoria,
+										fechaPedido, unidadesPedidas);*/
 							}
 						}
 					} catch (Exception e) {
