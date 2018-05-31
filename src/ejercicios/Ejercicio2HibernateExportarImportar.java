@@ -50,6 +50,7 @@ import clases.Tienda;
 import clases.Venta;
 import primero.HibernateUtil;
 import primero.Pedidos;
+import primero.PedidosId;
 import primero.Tiendas;
 import primero.Ventas;
 import primero.VentasId;
@@ -175,13 +176,13 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				if (rbtnVentas.isSelected() == true) {
-					
+
 					String nif = seleccionaNif(cboxTiendas);
 
 					ventas = dameVentas(nif);
 
 				} else {
-					
+
 					String nif = seleccionaNif(cboxTiendas);
 
 					pedidos = damePedidos(nif);
@@ -205,7 +206,7 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 						ObjectOutputStream dataOS = new ObjectOutputStream(fileout);
 
 						Ventas venta1;
-						
+
 						for (int i = 0; i < ventas.size(); i++) {
 
 							venta1 = (Ventas) ventas.get(i);
@@ -233,7 +234,39 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 
 				} else {
 
-					
+					try {
+						File fichero = new File("FicheroDatosPedidos.dat");
+
+						FileOutputStream fileout = new FileOutputStream(fichero);
+
+						ObjectOutputStream dataOS = new ObjectOutputStream(fileout);
+
+						Pedidos pedido1;
+
+						for (int i = 0; i < pedidos.size(); i++) {
+
+							pedido1 = (Pedidos) pedidos.get(i);
+
+							pedido1.getId().getNif();
+							pedido1.getId().getArticulo();
+							pedido1.getArticulos().getFabricantes().getNombre();
+							pedido1.getId().getPeso();
+							pedido1.getId().getCategoria();
+							pedido1.getId().getFechaPedido();
+							pedido1.getUnidadesPedidas();
+
+							dataOS.writeObject(pedido1);
+
+						}
+						dataOS.close(); // cerrar stream
+
+						JOptionPane.showMessageDialog(null, "Exportado Fichero Pedidos");
+
+						System.out.println("Exportado Fichero Ventas");
+
+					} catch (Exception ex) {
+						// TODO: handle exception
+					}
 
 				}
 
@@ -256,24 +289,55 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 							Ventas venta1;
 
 							venta1 = (Ventas) dataIS.readObject();
-						
-							insertaVenta(venta1.getId().getNif(), venta1.getId().getArticulo(), venta1.getId().getCodFabricante(), venta1.getId().getPeso(),
-									venta1.getId().getCategoria(), venta1.getId().getFechaVenta(), venta1.getUnidadesVendidas());
-							
+
+							insertaVenta(venta1.getId().getNif(), venta1.getId().getArticulo(),
+									venta1.getId().getCodFabricante(), venta1.getId().getPeso(),
+									venta1.getId().getCategoria(), venta1.getId().getFechaVenta(),
+									venta1.getUnidadesVendidas());
+
 							System.out.println(venta1.getId().getNif() + " " + venta1.getId().getArticulo());
 						}
 						// Funciona pero no me deja cerrar el DataInputStream
 						// dataIS.close();
 
 					} catch (Exception ex) {
-						
+
 						JOptionPane.showMessageDialog(null, "Fichero Importado con exito");
 					}
 
 				} else {
 
+					try {
+						File fichero = new File("FicheroDatosPedidos.dat");
+
+						FileInputStream filein = new FileInputStream(fichero);
+
+						ObjectInputStream dataIS = new ObjectInputStream(filein);
+
+						while (true) {
+
+							Pedidos pedido1;
+
+							pedido1 = (Pedidos) dataIS.readObject();
+
+							insertaPedido(pedido1.getId().getNif(), pedido1.getId().getArticulo(),
+									pedido1.getId().getCodFabricante(), pedido1.getId().getPeso(),
+									pedido1.getId().getCategoria(), pedido1.getId().getFechaPedido(),
+									pedido1.getUnidadesPedidas());
+
+							System.out.println(pedido1.getId().getNif() + " " + pedido1.getId().getArticulo());
+						}
+						// Funciona pero no me deja cerrar el DataInputStream
+						// dataIS.close();
+
+					} catch (Exception ex) {
+
+						//JOptionPane.showMessageDialog(null, "Fichero Importado con exito");
+					}
+
 				}
 			}
+
 		});
 
 		btnExportarXML.addActionListener(new ActionListener() {
@@ -292,26 +356,30 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 						Document document = implementation.createDocument(null, "Ventas", null);
 						document.setXmlVersion("1.0");
 
+						Ventas venta1;
+						
 						for (int i = 0; i < ventas.size(); i++) {
 
 							Element raiz = document.createElement("venta"); // nodo
 																			// venta
 							document.getDocumentElement().appendChild(raiz);
-
+							
+							venta1 = (Ventas) ventas.get(i);
+							
 							// añadir Nif
-							crearElemento("nif", ventas.get(i).getNif(), raiz, document);
+							crearElemento("nif", venta1.getId().getNif(), raiz, document);
 							// añadir nombreArticulo
-							crearElemento("nombreArticulo", ventas.get(i).getNombreArticulo(), raiz, document);
+							crearElemento("nombreArticulo", venta1.getId().getArticulo(), raiz, document);
 							// añadir codFabricante
-							crearElemento("codFabricante", ventas.get(i).getCodFabricante() + "", raiz, document);
+							crearElemento("codFabricante", Short.toString(venta1.getId().getCodFabricante()), raiz, document);
 							// añadir peso
-							crearElemento("peso", ventas.get(i).getPeso() + "", raiz, document);
+							crearElemento("peso", Short.toString(venta1.getId().getPeso()), raiz, document);
 							// añadir categoria
-							crearElemento("categoria", ventas.get(i).getCategoria() + "", raiz, document);
+							crearElemento("categoria", venta1.getId().getCategoria(), raiz, document);
 							// añadir fechaVenta
-							crearElemento("fechaVenta", ventas.get(i).getFechaVenta(), raiz, document);
+							crearElemento("fechaVenta", venta1.getId().getFechaVenta().toString(), raiz, document);
 							// añadir unidadesVendidas
-							crearElemento("unidadesVendidas", ventas.get(i).getUnidadesVendidas() + "", raiz, document);
+							crearElemento("unidadesVendidas", Short.toString(venta1.getUnidadesVendidas()), raiz, document);
 						}
 
 						Source source = new DOMSource(document);
@@ -336,7 +404,7 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 					}
 
 				} else {
-
+					
 					DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
 					DocumentBuilder builder;
@@ -347,34 +415,38 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 						Document document = implementation.createDocument(null, "Pedidos", null);
 						document.setXmlVersion("1.0");
 
+						Pedidos pedido1;
+						
 						for (int i = 0; i < pedidos.size(); i++) {
 
 							Element raiz = document.createElement("pedido"); // nodo
-																				// venta
+																			// venta
 							document.getDocumentElement().appendChild(raiz);
-
+							
+							pedido1 = (Pedidos) pedidos.get(i);
+							
 							// añadir Nif
-							crearElemento("nif", pedidos.get(i).getNif(), raiz, document);
+							crearElemento("nif", pedido1.getId().getNif(), raiz, document);
 							// añadir nombreArticulo
-							crearElemento("nombreArticulo", pedidos.get(i).getNombreArticulo(), raiz, document);
+							crearElemento("nombreArticulo", pedido1.getId().getArticulo(), raiz, document);
 							// añadir codFabricante
-							crearElemento("codFabricante", pedidos.get(i).getCodFabricante() + "", raiz, document);
+							crearElemento("codFabricante", Short.toString(pedido1.getId().getCodFabricante()), raiz, document);
 							// añadir peso
-							crearElemento("peso", pedidos.get(i).getPeso() + "", raiz, document);
+							crearElemento("peso", Short.toString(pedido1.getId().getPeso()), raiz, document);
 							// añadir categoria
-							crearElemento("categoria", pedidos.get(i).getCategoria() + "", raiz, document);
-							// añadir fechaPedido
-							crearElemento("fechaPedido", pedidos.get(i).getFechaPedido(), raiz, document);
-							// añadir unidadesPedidas
-							crearElemento("unidadesPedidas", pedidos.get(i).getUnidadesPedidas() + "", raiz, document);
+							crearElemento("categoria", pedido1.getId().getCategoria(), raiz, document);
+							// añadir fechaVenta
+							crearElemento("fechaVenta", pedido1.getId().getFechaPedido().toString(), raiz, document);
+							// añadir unidadesVendidas
+							crearElemento("unidadesVendidas", Short.toString(pedido1.getUnidadesPedidas()), raiz, document);
 						}
 
 						Source source = new DOMSource(document);
-						Result result = new StreamResult(new java.io.File("Pedidos.xml"));
+						Result result = new StreamResult(new java.io.File("PedidosXML.xml"));
 						Transformer transformer = TransformerFactory.newInstance().newTransformer();
 						transformer.transform(source, result);
 
-						JOptionPane.showMessageDialog(null, "Exportado Fichero Pedidos.xml");
+						JOptionPane.showMessageDialog(null, "Exportado Fichero PedidosXML.xml");
 
 					} catch (ParserConfigurationException e1) {
 						// TODO Auto-generated catch block
@@ -389,6 +461,8 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+
+					
 
 				}
 
@@ -584,15 +658,15 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 
 		elem.appendChild(text); // pegamos el valor
 	}
-	
+
 	public void insertaVenta(String nif, String nombreArticulo, short codFabricante, short peso, String categoria,
-			Date fechaVenta, short unidadesVendidas){
-		
+			Date fechaVenta, short unidadesVendidas) {
+
 		Transaction tx = session.beginTransaction();
-		
+
 		Ventas venta = new Ventas();
 		VentasId venta1 = new VentasId();
-		
+
 		venta1.setNif((String) nif);
 		venta1.setArticulo((String) nombreArticulo);
 		venta1.setCodFabricante((Short) codFabricante);
@@ -601,10 +675,42 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 		venta1.setFechaVenta((Date) fechaVenta);
 		venta.setUnidadesVendidas((short) unidadesVendidas);
 		venta.setId(venta1);
-		
+
 		session.save(venta);
 		tx.commit();
-		
-		
+
+	}
+
+	private void insertaPedido(String nif, String nombreArticulo, short codFabricante, short peso, String categoria,
+			Date fechaPedido, Short unidadesPedidas) {
+
+		Transaction tx = session.beginTransaction();
+
+		Pedidos pedido = new Pedidos();
+		PedidosId pedido1 = new PedidosId();
+
+		pedido1.setNif((String) nif);
+		pedido1.setArticulo((String) nombreArticulo);
+		pedido1.setCodFabricante((Short) codFabricante);
+		pedido1.setPeso((short) peso);
+		pedido1.setCategoria((String) categoria);
+		pedido1.setFechaPedido((Date) fechaPedido);
+		pedido.setUnidadesPedidas((short) unidadesPedidas);
+		pedido.setId(pedido1);
+
+		session.save(pedido);
+		tx.commit();
+
+	}
+	
+	public void crearElemento(String dato, String valor, Element raiz, Document document) {
+
+		Element elem = document.createElement(dato);
+
+		Text text = document.createTextNode(valor); // damos valor
+
+		raiz.appendChild(elem); // pegamos el elemento hijo a la raiz
+
+		elem.appendChild(text); // pegamos el valor
 	}
 }
