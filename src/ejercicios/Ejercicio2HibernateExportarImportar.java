@@ -664,7 +664,7 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 
 		venta1.setNif((String) nif);
 		venta1.setArticulo((String) nombreArticulo);
-		venta1.setCodFabricante((Short) codFabricante);
+		venta1.setCodFabricante((short) codFabricante);
 		venta1.setPeso((short) peso);
 		venta1.setCategoria((String) categoria);
 		venta1.setFechaVenta((Date) fechaVenta);
@@ -686,7 +686,7 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 
 		pedido1.setNif((String) nif);
 		pedido1.setArticulo((String) nombreArticulo);
-		pedido1.setCodFabricante((Short) codFabricante);
+		pedido1.setCodFabricante((short) codFabricante);
 		pedido1.setPeso((short) peso);
 		pedido1.setCategoria((String) categoria);
 		pedido1.setFechaPedido((Date) fechaPedido);

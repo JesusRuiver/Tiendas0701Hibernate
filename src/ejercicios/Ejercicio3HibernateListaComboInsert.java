@@ -22,7 +22,11 @@ import javax.swing.event.ListSelectionListener;
 import primero.Articulos;
 import primero.Fabricantes;
 import primero.HibernateUtil;
+import primero.Pedidos;
+import primero.PedidosId;
 import primero.Tiendas;
+import primero.Ventas;
+import primero.VentasId;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -36,6 +40,7 @@ import java.text.SimpleDateFormat;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
+import javax.swing.SpinnerNumberModel;
 
 public class Ejercicio3HibernateListaComboInsert extends JFrame {
 
@@ -104,6 +109,7 @@ public class Ejercicio3HibernateListaComboInsert extends JFrame {
 		contentPane.add(cboxArticulos);
 
 		spinPeso = new JSpinner();
+		spinPeso.setModel(new SpinnerNumberModel(0, 0, 3, 1));
 		spinPeso.setBounds(539, 91, 107, 20);
 		contentPane.add(spinPeso);
 
@@ -201,44 +207,47 @@ public class Ejercicio3HibernateListaComboInsert extends JFrame {
 		btnInsertarArticulo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
+				/*
+				 * Por defecto los Spinner tienen como tipo de datos Integer, he utilizado esta
+				 * solución (Castear el dato recogido en el spinner a short)pero en propiedades
+				 * avanzadads del elemento spinner de windows builder podemo s cambiar el tipod
+				 * el tipo de datos
+				 */
+
 				int pesoSpin = (int) spinPeso.getValue();
-				
+
 				peso = (short) pesoSpin;
 
-				int unidadesSpin = (int)spinUnidades.getValue();
-				
+				int unidadesSpin = (int) spinUnidades.getValue();
+
 				unidades = (short) unidadesSpin;
 
 				String fechaString = txtFecha.getText();
 				SimpleDateFormat formatoTexto = new SimpleDateFormat("yyyy-MM-dd");
 				try {
-					
+
 					fecha = formatoTexto.parse(fechaString);
-					
+
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
 
 				categoria = txtCategoria.getText();
 
-				
-				System.out.println(nifTienda + " " + nombreArticulo+ " " + codFabricante+ " " + peso+ " " + unidades+ " "
-				+ fecha+ " " + categoria);
-				
-				
-//				if (rbtnVentas.isSelected() == true) {
-//
-//					insertaVenta(nifTienda, nombreArticulo, codFabricante, peso, categoria, fecha, unidades);
-//
-//				} else {
-//
-//					miConexion.insertaPedido(nifTienda, nombreArticulo, codFabricante, peso, categoria, fecha,
-//							unidades);
-//				}
-//
-//				System.out.println(nifTienda + nombreArticulo + codFabricante + peso + unidades + fecha + categoria);
+				System.out.println(nifTienda + " " + nombreArticulo + " " + codFabricante + " " + peso + " " + unidades
+						+ " " + fecha + " " + categoria);
+
+				if (rbtnVentas.isSelected() == true) {
+
+					insertaVenta(nifTienda, nombreArticulo, codFabricante, peso, categoria, fecha, unidades);
+					
+				} else {
+
+					insertaPedido(nifTienda, nombreArticulo, codFabricante, peso, categoria, fecha, unidades);
+				}
+
+				System.out.println(nifTienda + nombreArticulo + codFabricante + peso + unidades + fecha + categoria);
 
 			}
 
@@ -301,5 +310,49 @@ public class Ejercicio3HibernateListaComboInsert extends JFrame {
 		}
 
 		listTiendas.setModel(modeloLista);
+	}
+
+	public void insertaVenta(String nif, String nombreArticulo, short codFabricante, short peso, String categoria,
+			Date fechaVenta, short unidadesVendidas) {
+
+		Transaction tx = session.beginTransaction();
+
+		Ventas venta = new Ventas();
+		VentasId venta1 = new VentasId();
+
+		venta1.setNif((String) nif);
+		venta1.setArticulo((String) nombreArticulo);
+		venta1.setCodFabricante((short) codFabricante);
+		venta1.setPeso((short) peso);
+		venta1.setCategoria((String) categoria);
+		venta1.setFechaVenta((Date) fechaVenta);
+		venta.setUnidadesVendidas((short) unidadesVendidas);
+		venta.setId(venta1);
+
+		session.save(venta);
+		tx.commit();
+
+	}
+	
+	private void insertaPedido(String nif, String nombreArticulo, short codFabricante, short peso, String categoria,
+			Date fechaPedido, Short unidadesPedidas) {
+
+		Transaction tx = session.beginTransaction();
+
+		Pedidos pedido = new Pedidos();
+		PedidosId pedido1 = new PedidosId();
+
+		pedido1.setNif((String) nif);
+		pedido1.setArticulo((String) nombreArticulo);
+		pedido1.setCodFabricante((short) codFabricante);
+		pedido1.setPeso((short) peso);
+		pedido1.setCategoria((String) categoria);
+		pedido1.setFechaPedido((Date) fechaPedido);
+		pedido.setUnidadesPedidas((short) unidadesPedidas);
+		pedido.setId(pedido1);
+
+		session.save(pedido);
+		tx.commit();
+
 	}
 }
