@@ -522,15 +522,16 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 								System.out.println("Unidades Vendidas: " + unidadesVendidas);
 
 							}
+
 						}
 
 					} catch (Exception e) {
 
 					}
 
-				}
-				
-				if (rbtnPedidos.isSelected() == true) {
+					JOptionPane.showMessageDialog(null, "Importado Fichero VentasXML.xml");
+
+				} else {
 					try {
 
 						DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -581,11 +582,14 @@ public class Ejercicio2HibernateExportarImportar extends JFrame {
 								System.out.println("Unidades Pedidas: " + unidadesPedidas);
 
 							}
+
 						}
+
 					} catch (Exception e) {
 						// TODO: handle exception
 					}
 
+					JOptionPane.showMessageDialog(null, "Importado Fichero PedidosXML.xml");
 				}
 			}
 
