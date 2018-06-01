@@ -92,4 +92,11 @@ public class Articulos implements java.io.Serializable {
 		this.pedidoses = pedidoses;
 	}
 
+	@Override
+	public String toString() {
+		return "ARTICULO: " + getId().getArticulo() + "  " + "FABRICANTE: " + getFabricantes().getNombre();
+	}
+
+	
+	
 }

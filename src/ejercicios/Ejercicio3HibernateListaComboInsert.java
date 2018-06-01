@@ -1,6 +1,7 @@
 package ejercicios;
 
 import java.awt.EventQueue;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -30,6 +31,8 @@ import org.hibernate.Transaction;
 
 import javax.swing.event.ListSelectionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
@@ -41,8 +44,8 @@ public class Ejercicio3HibernateListaComboInsert extends JFrame {
 	private JTextField txtCategoria;
 
 	private JList<Tiendas> listTiendas = new JList<Tiendas>();
-	private JComboBox <Object> cboxArticulos = new JComboBox<Object>();
-	
+	private JComboBox<Articulos> cboxArticulos = new JComboBox();
+
 	private JSpinner spinPeso = new JSpinner();
 	private JSpinner spinUnidades = new JSpinner();
 
@@ -51,12 +54,12 @@ public class Ejercicio3HibernateListaComboInsert extends JFrame {
 	private SessionFactory sesion;
 	private Session session;
 
-	private String nifTienda = null;
+	private String nifTienda;
 	private String nombreArticulo;
-	private int codFabricante;
-	private int peso;
-	private int unidades;
-	private String fecha;
+	private short codFabricante;
+	private short peso;
+	private short unidades;
+	private Date fecha;
 	private String categoria;
 
 	/**
@@ -95,7 +98,7 @@ public class Ejercicio3HibernateListaComboInsert extends JFrame {
 
 		scrollPane.setViewportView(listTiendas);
 
-		//cboxArticulos = new JComboBox();
+		// cboxArticulos = new JComboBox <Articulos>();
 
 		cboxArticulos.setBounds(379, 34, 267, 20);
 		contentPane.add(cboxArticulos);
@@ -157,95 +160,121 @@ public class Ejercicio3HibernateListaComboInsert extends JFrame {
 
 		rellenaListaTiendas(listTiendas);
 
-		rellenaComboBoxArticulos(cboxArticulos);
+		rellenaComboBoxArticulos();
 
-		/*
-		 * listTiendas.addListSelectionListener(new ListSelectionListener() {
-		 * 
-		 * public void valueChanged(ListSelectionEvent e) {
-		 * 
-		 * Tienda tienda1 = new Tienda();
-		 * 
-		 * if (e.getValueIsAdjusting()) {
-		 * 
-		 * tienda1 = listTiendas.getSelectedValue();
-		 * 
-		 * nifTienda = tienda1.getNif();
-		 * 
-		 * System.out.println(nifTienda);
-		 * 
-		 * }
-		 * 
-		 * }
-		 * 
-		 * });
-		 * 
-		 * cboxArticulos.addActionListener(new ActionListener() { public void
-		 * actionPerformed(ActionEvent arg0) {
-		 * 
-		 * Articulo articulo1 = new Articulo();
-		 * 
-		 * articulo1 = (Articulo) cboxArticulos.getSelectedItem();
-		 * 
-		 * nombreArticulo = articulo1.getNombreArticulo();
-		 * 
-		 * codFabricante = articulo1.getCodFabricante();
-		 * 
-		 * } });
-		 * 
-		 * btnInsertarArticulo.addActionListener(new ActionListener() { public
-		 * void actionPerformed(ActionEvent arg0) {
-		 * 
-		 * peso = (int) spinPeso.getValue();
-		 * 
-		 * unidades = (int) spinUnidades.getValue();
-		 * 
-		 * fecha = txtFecha.getText();
-		 * 
-		 * categoria = txtCategoria.getText();
-		 * 
-		 * if (rbtnVentas.isSelected() == true) {
-		 * 
-		 * miConexion.insertaVenta(nifTienda, nombreArticulo, codFabricante,
-		 * peso, categoria, fecha, unidades);
-		 * 
-		 * } else {
-		 * 
-		 * miConexion.insertaPedido(nifTienda, nombreArticulo, codFabricante,
-		 * peso, categoria, fecha, unidades); }
-		 * 
-		 * System.out.println(nifTienda + nombreArticulo + codFabricante + peso
-		 * + unidades + fecha + categoria);
-		 * 
-		 * }
-		 * 
-		 * });
-		 */
+		listTiendas.addListSelectionListener(new ListSelectionListener() {
+
+			public void valueChanged(ListSelectionEvent e) {
+
+				Tiendas tienda1 = new Tiendas();
+
+				if (e.getValueIsAdjusting()) {
+
+					tienda1 = listTiendas.getSelectedValue();
+
+					nifTienda = tienda1.getNif();
+
+					System.out.println(nifTienda);
+
+				}
+
+			}
+
+		});
+
+		cboxArticulos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				Articulos articulo1 = new Articulos();
+
+				articulo1 = (Articulos) cboxArticulos.getSelectedItem();
+
+				nombreArticulo = articulo1.getId().getArticulo();
+
+				codFabricante = articulo1.getId().getCodFabricante();
+
+				System.out.println(nombreArticulo + codFabricante);
+
+			}
+		});
+
+		btnInsertarArticulo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				peso = (short)spinPeso.getValue();
+
+				unidades = (short)spinUnidades.getValue();
+
+				String fechaString = txtFecha.getText();
+				SimpleDateFormat formatoTexto = new SimpleDateFormat("yyyy-MM-dd");
+				try {
+					
+					fecha = formatoTexto.parse(fechaString);
+					
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+
+				categoria = txtCategoria.getText();
+
+				
+				System.out.println(nifTienda + nombreArticulo + codFabricante + fecha + categoria);
+				
+				System.out.println(peso + "");
+				
+//				if (rbtnVentas.isSelected() == true) {
+//
+//					insertaVenta(nifTienda, nombreArticulo, codFabricante, peso, categoria, fecha, unidades);
+//
+//				} else {
+//
+//					miConexion.insertaPedido(nifTienda, nombreArticulo, codFabricante, peso, categoria, fecha,
+//							unidades);
+//				}
+//
+//				System.out.println(nifTienda + nombreArticulo + codFabricante + peso + unidades + fecha + categoria);
+
+			}
+
+		});
 
 	}
 
 	// ------------------------------------------METODOS-----------------------------------------//
 
-	private void rellenaComboBoxArticulos(JComboBox cboxArticulos) {
-		
-		//String hql = "select f.nombre, a.id.articulo from Articulos a, Fabricantes f where f.codFabricante = a.id.codFabricante group by a.id.articulo";
-		
+	private void rellenaComboBoxArticulos() {
+
+		// String hql = "select f.nombre, a.id.articulo from Articulos a,
+		// Fabricantes f where f.codFabricante = a.id.codFabricante group by
+		// a.id.articulo";
+
 		String hql = "from Articulos";
 
 		Query q = session.createQuery(hql);
-		
+
 		List<Articulos> listaArticulos = q.list();
 
-		Iterator <Articulos> it = listaArticulos.iterator();
+		Iterator<Articulos> it = listaArticulos.iterator();
 
 		while (it.hasNext()) {
-			
+
 			Articulos articulo1 = (Articulos) it.next();
 
-			cboxArticulos.addItem("ARTICULO: " + articulo1.getId().getArticulo() + " " + "FABRICANTE: " + articulo1.getFabricantes().getNombre());
+			cboxArticulos.addItem(articulo1);
 
 		}
 
+	}
+
+	private String seleccionaNombreArticulo(JComboBox cboxArticulos) {
+
+		Articulos articulo1 = new Articulos();
+
+		articulo1 = (Articulos) cboxArticulos.getSelectedItem();
+
+		return articulo1.getId().getArticulo();
 	}
 
 	private void rellenaListaTiendas(JList listTiendas) {
