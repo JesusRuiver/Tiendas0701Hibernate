@@ -201,9 +201,13 @@ public class Ejercicio3HibernateListaComboInsert extends JFrame {
 		btnInsertarArticulo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				peso = (short)spinPeso.getValue();
+				int pesoSpin = (int) spinPeso.getValue();
+				
+				peso = (short) pesoSpin;
 
-				unidades = (short)spinUnidades.getValue();
+				int unidadesSpin = (int)spinUnidades.getValue();
+				
+				unidades = (short) unidadesSpin;
 
 				String fechaString = txtFecha.getText();
 				SimpleDateFormat formatoTexto = new SimpleDateFormat("yyyy-MM-dd");
@@ -220,9 +224,9 @@ public class Ejercicio3HibernateListaComboInsert extends JFrame {
 				categoria = txtCategoria.getText();
 
 				
-				System.out.println(nifTienda + nombreArticulo + codFabricante + fecha + categoria);
+				System.out.println(nifTienda + " " + nombreArticulo+ " " + codFabricante+ " " + peso+ " " + unidades+ " "
+				+ fecha+ " " + categoria);
 				
-				System.out.println(peso + "");
 				
 //				if (rbtnVentas.isSelected() == true) {
 //
